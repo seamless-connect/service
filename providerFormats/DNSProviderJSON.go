@@ -28,3 +28,7 @@ func (_ *Reserved) UnmarshalJSON(_ []byte) error {
 func (_ *Reserved) MarshalJSON(_ []byte) error {
 	return nil
 }
+
+type SupportedTemplate struct {
+	Version TmplVersion `json:"version"`
+}

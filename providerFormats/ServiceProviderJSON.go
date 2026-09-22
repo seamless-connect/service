@@ -8,25 +8,27 @@ import (
 	"strings"
 )
 
+type TmplVersion uint
+
 type Template struct {
-	ProviderID          string  `json:"providerId" validate:"required,min=1,max=64"`
-	ProviderName        string  `json:"providerName" validate:"required,min=1,max=64"`
-	ServiceID           string  `json:"serviceId" validate:"required,min=1,max=64"`
-	ServiceName         string  `json:"serviceName" validate:"required,min=1,max=255"`
-	Version             uint    `json:"version,omitempty"`
-	Logo                string  `json:"logoUrl,omitempty" validate:"omitempty,http_url"`
-	Description         string  `json:"description,omitempty"`
-	VariableDescription string  `json:"variableDescription,omitempty"`
-	Shared              ObsBool `json:"shared,omitempty"`
-	SyncBlock           bool    `json:"syncBlock,omitempty"`
-	SharedProviderName  bool    `json:"sharedProviderName,omitempty"`
-	SharedServiceName   bool    `json:"sharedServiceName,omitempty"`
-	SyncPubKeyDomain    string  `json:"syncPubKeyDomain,omitempty" validate:"max=255"`
-	SyncRedirectDomain  string  `json:"syncRedirectDomain,omitempty"`
-	MultiInstance       bool    `json:"multiInstance,omitempty"`
-	WarnPhishing        ObsBool `json:"warnPhishing,omitempty"`
-	HostRequired        bool    `json:"hostRequired,omitempty"`
-	Records             Records `json:"records"`
+	ProviderID          string      `json:"providerId" validate:"required,min=1,max=64"`
+	ProviderName        string      `json:"providerName" validate:"required,min=1,max=64"`
+	ServiceID           string      `json:"serviceId" validate:"required,min=1,max=64"`
+	ServiceName         string      `json:"serviceName" validate:"required,min=1,max=255"`
+	Version             TmplVersion `json:"version,omitempty"`
+	Logo                string      `json:"logoUrl,omitempty" validate:"omitempty,http_url"`
+	Description         string      `json:"description,omitempty"`
+	VariableDescription string      `json:"variableDescription,omitempty"`
+	Shared              ObsBool     `json:"shared,omitempty"`
+	SyncBlock           bool        `json:"syncBlock,omitempty"`
+	SharedProviderName  bool        `json:"sharedProviderName,omitempty"`
+	SharedServiceName   bool        `json:"sharedServiceName,omitempty"`
+	SyncPubKeyDomain    string      `json:"syncPubKeyDomain,omitempty" validate:"max=255"`
+	SyncRedirectDomain  string      `json:"syncRedirectDomain,omitempty"`
+	MultiInstance       bool        `json:"multiInstance,omitempty"`
+	WarnPhishing        ObsBool     `json:"warnPhishing,omitempty"`
+	HostRequired        bool        `json:"hostRequired,omitempty"`
+	Records             Records     `json:"records"`
 }
 
 type Records []Record
