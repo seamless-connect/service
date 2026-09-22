@@ -1,0 +1,18 @@
+# Domain Connect ConTroL (dcctl)
+
+This is a command-line utility that will interact with the Domain Connect.
+The tool is dual purpose
+
+1. Allow easy debugging for Service and DNS Providers
+2. Have an interface that is trivial to automate
+
+## Inputs
+
+* Domain
+* Possible required variables
+
+## Debugging capabilities
+
+* Log level per component
+  * Service Provider vs DNS Provider
+* Making request tracing as easy as possible
