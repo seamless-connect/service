@@ -5,9 +5,10 @@ import (
 	"net"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
-	"golang.org/x/sync/errgroup"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 )
 
 type httpStatus struct {
@@ -18,13 +19,14 @@ type httpError struct {
 	Err string `json:"error" example:"Error message"`
 }
 
-func ListenAPI(conf API, errgr *errgroup.Group) *http.Server {
+// ListenAPI builds the API server, instrumented with OpenTelemetry.
+func ListenAPI(conf API) *http.Server {
 	gin.SetMode(gin.ReleaseMode)
 	gin.DefaultWriter = io.Discard
 	gin.DisableConsoleColor()
 
 	r := gin.New()
-	r.Use(gin.Recovery())
+	r.Use(gin.Recovery(), otelgin.Middleware(serviceName))
 
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, httpError{Err: "not found"})
@@ -33,19 +35,15 @@ func ListenAPI(conf API, errgr *errgroup.Group) *http.Server {
 	prefix := r.Group(conf.Prefix)
 	prefix.GET("/_heartbeat", heartbeat)
 
-	listenAddr := net.JoinHostPort(conf.Host, strconv.Itoa(int(conf.Port)))
-	apiServer := &http.Server{
-		Addr:    listenAddr,
+	return &http.Server{
+		Addr:    net.JoinHostPort(conf.Host, strconv.Itoa(int(conf.Port))),
 		Handler: r,
+		// FIXME: make the timeouts configurable
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       15 * time.Second,
+		WriteTimeout:      15 * time.Second,
+		IdleTimeout:       60 * time.Second,
 	}
-	errgr.Go(func() error {
-		err := apiServer.ListenAndServe()
-		if err == http.ErrServerClosed {
-			return nil
-		}
-		return err
-	})
-	return apiServer
 }
 
 func heartbeat(c *gin.Context) {
