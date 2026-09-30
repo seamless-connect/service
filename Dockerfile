@@ -10,6 +10,6 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o serviceProvider .
 FROM alpine:latest
 WORKDIR /app
 COPY --from=builder /app/serviceProvider .
-COPY sample.conf .
+COPY serviceProvider/sample.conf .
 EXPOSE 9270 9271
 CMD ["./serviceProvider", "--config", "sample.conf"]

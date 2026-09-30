@@ -1,4 +1,4 @@
-package main
+package serviceProvider
 
 import (
 	"context"
@@ -29,7 +29,7 @@ func main() {
 	os.Exit(run())
 }
 
-func run() int {
+func Run() int {
 	configPath := flag.String("config", "/etc/domain-connect/serviceProvider.toml", "path to configuration")
 	flag.Parse()
 
