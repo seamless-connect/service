@@ -1,7 +1,7 @@
 services:
   serviceprovider:
     build:
-      context: ./serviceProvider
+      context: .
       dockerfile: Dockerfile
     command: ["./serviceProvider", "--config", "sample.conf"]
     ports:
@@ -12,13 +12,15 @@ services:
         condition: service_started
 
   otel-collector:
-    image: otel/opentelemetry-collector:latest
+    image: otel/opentelemetry-collector-contrib:latest
     command: ["--config=/etc/otelcol/config.yaml"]
     volumes:
-      - ./otelCollector.yaml:/etc/otelcol/config.yaml:ro
+      - ./otel-collector/otelCollector.yaml:/etc/otelcol/config.yaml:ro
+      - ./otel-collector/otelCollector.log:/etc/otelcol/output.log:rw
     ports:
       - "4317:4317" # OTLP gRPC receiver
       - "4318:4318" # OTLP HTTP/protobuf receiver
       - "8888:8888" # Prometheus metrics scrape endpoint with collector telemetry
       - "8889:8889" # Prometheus metrics exporter (scrape endpoint)
       - "13133:13133" # health_check extension
+      - "54526:54526" # tcplog receiver

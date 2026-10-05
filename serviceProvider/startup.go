@@ -25,10 +25,6 @@ const (
 // FIXME: make configurable?
 const shutdownTimeout = 42 * time.Second
 
-func main() {
-	os.Exit(run())
-}
-
 func Run() int {
 	configPath := flag.String("config", "/etc/domain-connect/serviceProvider.toml", "path to configuration")
 	flag.Parse()
