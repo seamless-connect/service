@@ -30,22 +30,22 @@ type SimplePostData struct {
 
 type SyncPostData struct {
 	BaseData
-	TXT                        string
-	JSON                       template.JS
-	CheckURL1                  string
-	CheckURL2                  string
-	Domain                     string
-	ProviderName               string
-	Width                      int
-	Height                     int
-	SynchronousURL1            string
-	SynchronousSignedURL2      string
-	QS                         string
-	Sig                        string
-	SynchronousRedirectURL1    string
+	TXT                           string
+	JSON                          template.JS
+	CheckURL1                     string
+	CheckURL2                     string
+	Domain                        string
+	ProviderName                  string
+	Width                         int
+	Height                        int
+	SynchronousURL1               string
+	SynchronousSignedURL2         string
+	QS                            string
+	Sig                           string
+	SynchronousRedirectURL1       string
 	SynchronousSignedRedirectURL2 string
-	QSRedirect                 string
-	SigRedirect                string
+	QSRedirect                    string
+	SigRedirect                   string
 }
 
 type SyncConfirmData struct {
@@ -61,13 +61,13 @@ type SyncErrorData struct {
 
 type AsyncPostData struct {
 	BaseData
-	TXT            string
-	JSON           template.JS
-	CheckURL1      string
-	CheckURL2      string
-	Domain         string
-	Hosts          string
-	ProviderName   string
+	TXT             string
+	JSON            template.JS
+	CheckURL1       string
+	CheckURL2       string
+	Domain          string
+	Hosts           string
+	ProviderName    string
 	AsynchronousURL string
 }
 

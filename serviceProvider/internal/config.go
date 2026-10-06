@@ -1,6 +1,8 @@
 package internal
 
 import (
+	"github.com/seamlessdns/service/providerFormats"
+
 	"github.com/BurntSushi/toml"
 )
 
@@ -8,10 +10,11 @@ type SPConf struct {
 	API API
 	// The OpenTelemetry setup.  The section is called [telemetry] rather
 	// than [otel], because that is what the settings as a whole describe.
-	OTel     OTel `toml:"telemetry"`
+	OTel OTel `toml:"telemetry"`
 	// Metrics are the OTel metric scrape end point.
-	Metrics Metrics
-	Loglevel string
+	Metrics   Metrics
+	Templates Templates
+	Loglevel  string
 }
 
 type API struct {
@@ -37,12 +40,24 @@ type OTel struct {
 	RuntimeMetrics bool
 }
 
-
 // Metrics is the address the OpenTelemetry metrics are exposed on for  scraping.
 type Metrics struct {
 	Host string
 	Port uint16
 	Path string
+}
+
+// Templates is holds multiple entries of a Template
+type Templates map[string]Template
+
+// Templates is Service Provider view to the Domain Connect Templates data.
+type Template struct {
+	Source     string
+	SecretKey  string
+	SigningKey any
+	SecretType string
+	PublicKey  string
+	Template   providerFormats.Template
 }
 
 func ReadConfig(path string) (SPConf, error) {

@@ -34,6 +34,7 @@ func ListenAPI(conf API) *http.Server {
 
 	prefix := r.Group(conf.Prefix)
 	prefix.GET("/_heartbeat", heartbeat)
+	prefix.Get("/", input)
 
 	return &http.Server{
 		Addr:    net.JoinHostPort(conf.Host, strconv.Itoa(int(conf.Port))),
@@ -49,4 +50,7 @@ func ListenAPI(conf API) *http.Server {
 func heartbeat(c *gin.Context) {
 	c.Writer.WriteHeader(http.StatusOK)
 	_, _ = c.Writer.Write([]byte("ok"))
+}
+
+func input(c *gin.Context) {
 }

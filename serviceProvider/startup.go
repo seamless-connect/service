@@ -36,6 +36,8 @@ func Run() int {
 	}
 	internal.SetupLogging(config.Loglevel)
 
+	readTemplates(config.Templates)
+
 	// Telemetry init is required before api.
 	telemetry, err := internal.SetupTelemetry(config.OTel, config.Metrics)
 	if err != nil {
