@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Domain Connect</title>
+    <!-- htmx is served by this service itself, so that the page works
+         without a connection to a CDN. -->
+    <script src="_htmx.min.js" defer></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background-color: #ffffff;
+        color: #000000;
+        font: 16px sans-serif;
+      }
+
+      /* The input and the button sit in the middle of the page. */
+      main {
+        min-height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      input {
+        padding: 0.4em;
+        border: 1px solid #000000;
+        font: inherit;
+      }
+
+      button {
+        margin-left: 0.5em;
+        padding: 0.4em 1em;
+        border: 1px solid #000000;
+        background-color: #ffffff;
+        color: #000000;
+        font: inherit;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div>
+        <!-- The size attribute makes the input line 64 characters wide.  The
+             maxlength is the length of the longest possible DNS name. -->
+        <input id="domain" name="domain" type="text" size="64" maxlength="253"
+          aria-label="Domain" placeholder="example.com" autofocus />
+        <!-- htmx posts the input to an endpoint relative to this page, so
+             that it works whatever prefix the service is configured with.  The
+             endpoint that processes the input is implemented later, until then
+             the request ends up in the not found handler. -->
+        <button type="button" hx-post="connect" hx-include="#domain"
+          hx-target="#result" hx-swap="innerHTML" hx-disabled-elt="this">Domain Connect</button>
+        <!-- The processed input is replaced into this element. -->
+        <div id="result"></div>
+      </div>
+    </main>
+  </body>
+</html>
