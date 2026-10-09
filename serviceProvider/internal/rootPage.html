@@ -40,22 +40,64 @@
         font: inherit;
         cursor: pointer;
       }
+
+      /* The fragments that the requests replace into this page.  The answer
+           of a DNS response is shown as it comes, tabs included. */
+      pre {
+        display: inline-block;
+        margin: 0.5em 0;
+        text-align: left;
+        white-space: pre-wrap;
+      }
+
+      /* The answer of a DNS response and the definition of the DNS Provider
+           are both shown as they come, tabs and indentation included.  The
+           definition wraps rather than scrolls, so that a long line cannot
+           push the rest of the page off the screen. */
+      pre.json {
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .label {
+        margin: 0.5em 0 0.25em;
+      }
+
+      .error {
+        font-weight: bold;
+      }
+
+      /* Something worth knowing that does not stop the page from being used,
+         such as a version of a template that the DNS Provider does not have. */
+      .notice {
+        font-weight: bold;
+      }
     </style>
   </head>
   <body>
     <main>
       <div>
-        <!-- The size attribute makes the input line 64 characters wide.  The
-             maxlength is the length of the longest possible DNS name. -->
-        <input id="domain" name="domain" type="text" size="64" maxlength="253"
-          aria-label="Domain" placeholder="example.com" autofocus />
-        <!-- htmx posts the input to an endpoint relative to this page, so
-             that it works whatever prefix the service is configured with.  The
-             endpoint that processes the input is implemented later, until then
-             the request ends up in the not found handler. -->
-        <button type="button" hx-post="connect" hx-include="#domain"
-          hx-target="#result" hx-swap="innerHTML" hx-disabled-elt="this">Domain Connect</button>
-        <!-- The processed input is replaced into this element. -->
+        <!-- The input and the button are in a form, so that pressing Enter in the
+             input submits it and posts the domain exactly like clicking the
+             button does.  A form with a single text field submits on Enter in
+             every browser, so no script of our own is needed.  htmx listens
+             for the submit of the form rather than for the click of the
+             button, which is what makes the two the same event. -->
+        <form action="connect" method="post" hx-post="connect" hx-target="#result"
+          hx-swap="innerHTML" hx-disabled-elt="find input, find button">
+          <!-- The size attribute makes the input line 64 characters wide.  The
+               maxlength is the length of the longest possible DNS name. -->
+          <input id="domain" name="domain" type="text" size="64" maxlength="253"
+            aria-label="Domain" placeholder="example.com" autofocus />
+          <!-- The action of the form is the same endpoint, so that the page
+               still works when htmx does not run.  While a request is in
+               flight the input and the button are disabled, so that the
+               domain cannot be changed under the one that was sent. -->
+          <button type="submit">Domain Connect</button>
+        </form>
+        <!-- The processed input is replaced into this element.  It is outside
+             the form, so that the selectors the requests add to the page are
+             not submitted along with the domain. -->
         <div id="result"></div>
       </div>
     </main>

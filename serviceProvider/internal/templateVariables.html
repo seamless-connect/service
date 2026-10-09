@@ -1,0 +1,51 @@
+{{define "templateVariables"}}
+<!-- This fragment replaces the element of the same name, so it keeps the id:
+     the selectors keep pointing at it when the choice changes. -->
+<div id="templateVariables">
+{{if .Error}}<p class="error">{{.Error}}</p>
+{{else if .Selected}}
+{{if .Warning}}<p class="notice">{{.Warning}}</p>
+{{end}}
+{{if .Grouped}}
+<!-- Which group of records is applied is asked first, because only the
+     variables of the chosen group are collected. -->
+<div id="groupSelect">
+  <label for="group">Group</label>
+  <select id="group" name="group"
+    hx-get="connect/template?domain={{.Domain}}&amp;template={{.Selected}}"
+    hx-target="#templateVariables" hx-swap="outerHTML" hx-trigger="change">
+    <option value="">-- choose a group --</option>
+    {{range .Groups}}<option value="{{.}}">{{.}}</option>
+    {{end}}</select>
+</div>
+{{end}}
+<!-- The values are collected in a form of their own, so that the request can
+     be built from them.  The form is inside this element, and this element is
+     outside the form of the domain, so nothing here is posted with the
+     domain. -->
+<form id="applyForm" hx-post="connect/apply?domain={{.Domain}}&amp;template={{.Selected}}{{if .Group}}&amp;group={{.Group}}{{end}}"
+  hx-target="#applyRequest" hx-swap="innerHTML">
+  <div class="variables">
+    {{if .Grouped}}
+    {{if .Group}}
+    {{range .Variables}}<p><label for="var-{{.Name}}">{{.Name}}:</label>
+      <input id="var-{{.Name}}" name="{{.Name}}" type="text" size="64"
+        aria-label="{{.Name}}" /></p>
+    {{end}}
+    {{else}}
+    <p>Choose the group to apply to collect the values it needs.</p>
+    {{end}}
+    {{else}}
+    {{range .Variables}}<p><label for="var-{{.Name}}">{{.Name}}:</label>
+      <input id="var-{{.Name}}" name="{{.Name}}" type="text" size="64"
+        aria-label="{{.Name}}" /></p>
+    {{else}}<p>This template has no variables to fill in.</p>
+    {{end}}
+    {{end}}
+  </div>
+  <p><button type="submit">create curl request</button></p>
+</form>
+<div id="applyRequest"></div>
+{{end}}
+</div>
+{{end}}

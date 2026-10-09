@@ -56,7 +56,10 @@ type Template struct {
 	SecretKey  string
 	SigningKey any
 	SecretType string
-	PublicKey  string
+	// PubKeyHost is the label that goes in front of the syncPubKeyDomain of
+	// the template to get the DNS name that holds the public key.  It is the
+	// value of the key parameter of an apply request.
+	PubKeyHost string
 	Template   providerFormats.Template
 }
 

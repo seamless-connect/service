@@ -1,0 +1,12 @@
+{{define "curlRequest"}}
+{{if .Error}}<p class="error">{{.Error}}</p>
+{{else}}
+<div id="applyRequest">
+  <p class="label">Request that applies {{.Description}} to {{.Domain}}.
+      Nothing has been sent: this is what you make when you want it done.</p>
+  <pre class="json">{{.Command}}</pre>
+  <p class="label">Data the DNS Provider posts on to verify the signature:</p>
+  <pre class="json">{{.Post}}</pre>
+</div>
+{{end}}
+{{end}}

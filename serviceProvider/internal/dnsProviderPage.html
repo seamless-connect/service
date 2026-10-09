@@ -1,0 +1,16 @@
+{{define "dnsProviderPage"}}
+<!-- The fragment with the result of the DNS Provider search. -->
+{{if .Error}}<p class="error">{{.Error}}</p>
+{{else}}<pre>{{.Answer}}</pre>
+<!-- What the DNS Provider states about itself.  It comes after the answer,
+     which names the DNS Provider, and before the templates, which are the
+     ones of that DNS Provider. -->
+<div id="dnsproviderDefinition">
+  {{if .Definition.Error}}<p class="error">{{.Definition.Error}}</p>
+  {{else}}<p class="label">Settings of the DNS Provider, from
+      <code>{{.Definition.URL}}</code>:</p>
+    <pre class="json">{{.Definition.JSON}}</pre>
+  {{end}}</div>
+{{template "templateApply" .Template}}
+{{end}}
+{{end}}

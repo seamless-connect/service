@@ -44,7 +44,7 @@ func Run() int {
 		log.Error().Err(err).Msg("cannot set up telemetry")
 		return EXIT_FAILURE
 	}
-	apiServer := internal.ListenAPI(config.API)
+	apiServer := internal.ListenAPI(config)
 
 	// Both API and telemetry report exit on the same channel.
 	type result struct {

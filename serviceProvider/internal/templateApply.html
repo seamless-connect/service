@@ -1,0 +1,18 @@
+{{define "templateApply"}}
+<!-- The templates that this Service Provider has been configured with.  The
+     choice is not permanent: the selector is filled in again whenever the
+     selection changes, so that the group and the variables below it always
+     belong to the template that is chosen at that moment.  The domain is part
+     of the ask, because what a template can be applied with is decided by the
+     DNS Provider of the domain. -->
+<div id="templateApply">
+  <label for="template">Template</label>
+  <select id="template" name="template"
+    hx-get="connect/template?domain={{.Domain}}" hx-target="#templateVariables"
+    hx-swap="outerHTML" hx-trigger="change">
+    <option value="">-- choose a template --</option>
+    {{range .Choices}}<option value="{{.ID}}">{{.Description}}</option>
+    {{end}}</select>
+  <div id="templateVariables"></div>
+</div>
+{{end}}

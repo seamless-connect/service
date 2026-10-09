@@ -1,0 +1,11 @@
+{{define "connectPage"}}
+<!-- The fragment that the Domain Connect button replaces into the input page. -->
+{{if .Error}}<p class="error">{{.Error}}</p>
+{{else}}<p>{{.Domain}} received</p>
+<!-- The search is a request of its own, so that the page is rendered without
+     waiting for the DNS Provider of the domain to be found.  The URL is
+     relative to this page, like the one of the button, so that it works
+     whatever prefix the service is configured with. -->
+<div id="dnsprovider" hx-get="{{.SearchURL}}" hx-trigger="load" hx-swap="innerHTML"></div>
+{{end}}
+{{end}}

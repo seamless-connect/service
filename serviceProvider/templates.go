@@ -18,6 +18,9 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+// readTemplates loads the definition of every template of the configuration
+// into it.  A template that cannot be read is left without a definition, which
+// keeps it out of the choice on the page.
 func readTemplates(tmpls internal.Templates) {
 	for id, conf := range tmpls {
 		log.Debug().Str("id", id).Msg("reading template")
@@ -52,6 +55,10 @@ func readTemplates(tmpls internal.Templates) {
 			continue
 		}
 		conf.SigningKey = getPrivateKey(conf.SecretKey)
+		// The range gives a copy of the entry, so the definition that was
+		// just read has to be put back into the configuration.  Without
+		// this the template stays empty and cannot be chosen on the page.
+		tmpls[id] = conf
 	}
 }
 
